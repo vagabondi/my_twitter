@@ -13,39 +13,34 @@ class User {
     }
 
     function setEmail($email, $conn) {
-        $this->email = $email;
+        
         $sql="SELECT email FROM User WHERE email='$email';";
         $result=$conn->query($sql);
         if ($result->num_rows > 0){
-            echo "E-mail jest już zajęty! Wybierz inny.";
-        }
+            echo "E-mail jest juz zajety! Wybierz inny.";
+        } else {
+            $this->email = $conn->escape_string($email);
+        } 
     }
 
-    public function setPwd($pwd, $pwd2) {
+    public function setPwd($pwd, $pwd2, $conn) {
         if ($pwd == $pwd2){
-            $this->pwd = sha1($pwd);
-        } else {
-            echo 'Hasła różnią się! Spróbuj jeszcze raz.';
-        }
+            $this->pwd = $conn->escape_string(sha1($pwd));
+        } 
     }
     
     public function register($email, $pwd, $pwd2, $conn){
-        if ($pwd != $pwd2) {
-            echo 'Hasla roznią sie';
-        } 
-        //pwd2 - potwierdzenie?
-        
-        
-        //Dzięki linijce niżej mamy w $pwdHashed bezpiecznie hasło
-        $pwdHashed = sha1($pwd); //32 znaki!
-        $sql="INSERT INTO User(email, pwd) VALUES ('$email', '$pwdHashed');";
-        $result=$conn->query($sql);
-            if($result!=FALSE) {
-                header("Location: login.php");
-            } else {
-                echo "Błąd podczas dodawania użytkownika.<br>" . $conn->error;
+        if ($pwd !== $pwd2) {
+            echo 'Hasla roznia sie! Sprobuj jeszcze raz.';
+        } else {
+            $this->setEmail($email, $conn);
+            $this->setPwd($pwd, $pwd2, $conn);
+            if($this->email == $email) {
+                $sql="INSERT INTO User(email, pwd) VALUES ('$this->email', '$this->pwd');";
+                $conn->query($sql);
+                echo 'Dodano użytkownika';
             }
-        
+        }        
     }
 
     public function login($email, $pwd, $conn) {
@@ -77,7 +72,7 @@ class User {
     }
     
     public function isLogged(){
-       if(!is_null($_SESSION['email']) && isset($_SESSION['email'])) {
+       if(!is_null($_SESSION['email']) || isset($_SESSION['email'])) {
            return true;
        }  
     }
@@ -85,8 +80,9 @@ class User {
     public function logout(){
         $_SESSION['email'] = null;
         $_SESSION['pwd'] = null;
-        
+
         session_destroy();
+        header('Location: login.php');
     }
     
     

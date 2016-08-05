@@ -5,7 +5,7 @@
     <label>Haslo: 
         <input type="password" name="pwd"><br /> 
     </label>
-    <label>Potwierdź hasło:
+    <label>Potwierdz haslo:
         <input type="password" name="pwd2"><br />
     </label>
         <input type="submit" value="Register"><br />
@@ -24,7 +24,7 @@ if($_SERVER['REQUEST_METHOD']==='POST') {
     $pwd2 = $conn->escape_string($_POST['pwd2']);
     
     
-    $user->register($email, $pwd, $pwd2);
+    $user->register($email, $pwd, $pwd2, $conn);
 }
 
 

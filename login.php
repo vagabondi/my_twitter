@@ -12,7 +12,10 @@
         
         
        $user-> login($email, $pwd, $conn);
+       
     
+       
+       
     
     }
     require_once 'DB/foot.inc.php';
