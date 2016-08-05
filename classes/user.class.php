@@ -38,7 +38,7 @@ class User {
             if($this->email == $email) {
                 $sql="INSERT INTO User(email, pwd) VALUES ('$this->email', '$this->pwd');";
                 $conn->query($sql);
-                echo 'Dodano użytkownika';
+                header('Location: login.php');
             }
         }        
     }
@@ -57,7 +57,9 @@ class User {
                 header('Location: index.php');
             }    
         } else {
-            echo 'Zle haslo lub e-mail, sprobuj jeszcze raz.';
+            $message = "Zle haslo lub e-mail, sprobuj jeszcze raz.";
+            echo "<script type='text/javascript'>alert('$message');</script>";
+            
         }
     }
     
