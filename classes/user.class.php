@@ -87,6 +87,10 @@ class User {
         header('Location: login.php');
     }
     
+     public function getMyEntries(){
+        
+    }
+    
     
     
 }
