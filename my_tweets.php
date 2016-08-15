@@ -30,13 +30,13 @@
              ?>
              " class="photo">
         <p class='user-name'><?php echo $_SESSION['email']; ?></p>
-        <div><a href='my_tweets.php'><p class='twits-info'>Tweets(<?php $tweet->numOfTwits($conn); ?>)</p></a></div>
+        <div><p class='twits-info'>Tweets(<?php $tweet->numOfTwits($conn); ?>)</p></div>
         
             
     </div>
     
     <?php
-    $tweet->show($conn);
+    $tweet->showMyTweets($conn);
     ?>       
     
 </div>
